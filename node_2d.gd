@@ -5,9 +5,12 @@ var peer : SteamMultiplayerPeer
 @export var player_scene : PackedScene
 var is_host : bool = false
 var is_joining : bool = false
+var max_member_count : int = 2
+
 @onready var host_button: Button = $HostButton
 @onready var join_button: Button = $JoinButton
 @onready var id_prompt: LineEdit = $JoinButton/IDPrompt
+@onready var member_count_prompt: LineEdit = $HostButton/MemberCountPrompt
 
 func _ready() -> void:
 	print("SteamInit: ", Steam.steamInit(480, true))
@@ -17,9 +20,9 @@ func _ready() -> void:
 	
 
 func host_lobby():
-	Steam.createLobby(Steam.LobbyType.LOBBY_TYPE_PUBLIC, 1)
+	Steam.createLobby(Steam.LobbyType.LOBBY_TYPE_PUBLIC)
 	is_host = true
-	
+	Steam.setLobbyMemberLimit(lobby_id, max_member_count)
 
 func _on_lobby_created(result : int, lobby_id : int):
 	if result == Steam.Result.RESULT_OK:
@@ -38,7 +41,7 @@ func _on_lobby_created(result : int, lobby_id : int):
 		
 
 func join_lobby(lobby_id: int):
-	print(Steam.getLobbyData(lobby_id,"max_members"))
+	print(Steam.getLobbyMemberLimit(lobby_id))
 	is_joining = true
 	Steam.joinLobby(lobby_id)
 	
@@ -82,3 +85,7 @@ func _on_join_button_pressed() -> void:
 
 func _on_id_prompt_text_changed(new_text: String) -> void:
 	join_button.disabled = (new_text.length() == 0)
+
+func _on_member_count_prompt_text_changed(new_text: String) -> void:
+	max_member_count = (member_count_prompt.text.to_int())
+	print("New max member count: ", max_member_count)
