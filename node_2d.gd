@@ -22,7 +22,6 @@ func _ready() -> void:
 func host_lobby():
 	Steam.createLobby(Steam.LobbyType.LOBBY_TYPE_PUBLIC)
 	is_host = true
-	Steam.setLobbyMemberLimit(lobby_id, max_member_count)
 
 func _on_lobby_created(result : int, lobby_id : int):
 	if result == Steam.Result.RESULT_OK:
@@ -38,10 +37,11 @@ func _on_lobby_created(result : int, lobby_id : int):
 		_add_player()
 		
 		print("Lobby Created! Lobby ID: ", lobby_id)
-		
+		Steam.setLobbyMemberLimit(lobby_id, max_member_count)
+		print("Lobby Member Limit: ", Steam.getLobbyMemberLimit(lobby_id))
 
 func join_lobby(lobby_id: int):
-	print(Steam.getLobbyMemberLimit(lobby_id))
+	print("Max Member Count for Lobby: ", Steam.getLobbyMemberLimit(lobby_id))
 	is_joining = true
 	Steam.joinLobby(lobby_id)
 	
@@ -87,5 +87,7 @@ func _on_id_prompt_text_changed(new_text: String) -> void:
 	join_button.disabled = (new_text.length() == 0)
 
 func _on_member_count_prompt_text_changed(new_text: String) -> void:
+	if member_count_prompt.text.to_int() == 0:
+		return
 	max_member_count = (member_count_prompt.text.to_int())
 	print("New max member count: ", max_member_count)
