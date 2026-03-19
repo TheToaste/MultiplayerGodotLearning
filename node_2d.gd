@@ -38,6 +38,7 @@ func _on_lobby_created(result : int, lobby_id : int):
 		
 
 func join_lobby(lobby_id: int):
+	print(Steam.getLobbyData(lobby_id,"max_members"))
 	is_joining = true
 	Steam.joinLobby(lobby_id)
 	
@@ -47,6 +48,10 @@ func _on_lobby_joined(lobby_id: int, permissions: int, locked: bool, response: i
 	if !is_joining:
 		return
 	
+	print("Permissions: ", permissions)
+	print("Locked: ", locked)
+	print("Response: ", response)
+	
 	self.lobby_id = lobby_id
 	peer = SteamMultiplayerPeer.new()
 	peer.server_relay = true
@@ -55,12 +60,14 @@ func _on_lobby_joined(lobby_id: int, permissions: int, locked: bool, response: i
 	is_joining = false
 
 func _add_player(id : int = 1):
+	print("Player Joined! ID: ", id)
 	var player = player_scene.instantiate()
 	player.name = str(id)
 	call_deferred("add_child", player)
 	
 
 func _remove_player(id : int):
+	print("Player Left! ID: ", id)
 	if not self.has_node(str(id)):
 		return
 		
