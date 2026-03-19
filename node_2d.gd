@@ -17,7 +17,7 @@ func _ready() -> void:
 	
 
 func host_lobby():
-	Steam.createLobby(Steam.LobbyType.LOBBY_TYPE_PUBLIC, 16)
+	Steam.createLobby(Steam.LobbyType.LOBBY_TYPE_PUBLIC, 1)
 	is_host = true
 	
 
