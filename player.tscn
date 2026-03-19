@@ -15,6 +15,7 @@ properties/0/replication_mode = 1
 script = ExtResource("1_onrkg")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2107144627]
+modulate = Color(1, 0, 0, 1)
 texture = ExtResource("2_i3pqv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=676893003]
